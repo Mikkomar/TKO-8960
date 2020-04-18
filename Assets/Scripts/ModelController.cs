@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GoogleARCore;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class ModelController : MonoBehaviour
     public Button PlaceButton;
     public Transform ScaleParent;
     private ModelManipulator GestureTracker;
-    // Start is called before the first frame update
+
     void Start()
     {
         HideChildren();
@@ -23,6 +24,7 @@ public class ModelController : MonoBehaviour
     void Update()
     {
         CheckPlaceButtonVisibility();
+        MakeModelMoveWithCamera();
     }
 
     /// <summary>
@@ -33,6 +35,28 @@ public class ModelController : MonoBehaviour
         for(int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Makes the active Model move with the camera
+    /// </summary>
+    private void MakeModelMoveWithCamera()
+    {
+        if (Session.Status != SessionStatus.Tracking)
+        {
+            return;
+        }
+
+        if (GestureTracker.ActiveModel != null && GestureTracker.ActiveModel.parent != null)
+        {
+            TrackableHit HitInfo;
+            /* Checks where the camera-plane axis intersects with the plane and creates a hitting point */
+            if (Frame.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out HitInfo))
+            {
+                GestureTracker.ActiveModel.parent.position = HitInfo.Pose.position;
+                //GestureTracker.ActiveModel.parent.rotation = HitInfo.Pose.rotation;
+            }
         }
     }
 

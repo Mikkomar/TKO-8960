@@ -101,14 +101,26 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Subsystem.Registration">
+      <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.Subsystem.Registration.dll</HintPath>
+    </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Editor">
       <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.XR.ARSubsystems">
+      <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.XR.ARSubsystems.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.ARFoundation.Editor">
+      <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.XR.ARFoundation.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.XR.ARFoundation">
+      <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/Unity.XR.ARFoundation.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Users/Marttila/Documents/GitHub/TKO 8960/TKO-8960/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
