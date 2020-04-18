@@ -7,6 +7,7 @@ public class ModelController : MonoBehaviour
 {
     public Dropdown Dropdown;
     public Button PlaceButton;
+    public Transform ScaleParent;
     private ModelManipulator GestureTracker;
     // Start is called before the first frame update
     void Start()
@@ -68,21 +69,34 @@ public class ModelController : MonoBehaviour
                         if(GestureTracker != null)
                         {
                             /* If there is no active Model, the selected object is cloned, set as the active Model and made visible*/
-                            if (GestureTracker.ActiveModel == null)
+                            if (GestureTracker.ActiveModel == null && ScaleParent != null)
                             {
                                 GestureTracker.ActiveModel = Instantiate(Child).transform;
                                 GestureTracker.ActiveModel.gameObject.SetActive(true);
+                                /* The Model needs to be assigned a parent with an offset, so the Model will be scaled "upwards" with the parent */
+                                var TempParent = Instantiate(ScaleParent.gameObject);
+                                TempParent.transform.position = new Vector3(GestureTracker.ActiveModel.transform.position.x, GestureTracker.ActiveModel.transform.position.y - 0.5f, GestureTracker.ActiveModel.transform.position.z);
+                                TempParent.transform.rotation = GestureTracker.ActiveModel.transform.rotation;
+                                TempParent.transform.localScale = GestureTracker.ActiveModel.transform.localScale;
+                                TempParent.SetActive(true);
+                                GestureTracker.ActiveModel.SetParent(TempParent.transform);
                             }
                             /* If there exists an active Model, it is replaced and deleted */
                             else
                             {
                                 var TempModel = Instantiate(Child).transform;
+                                var TempParent = Instantiate(ScaleParent.gameObject);
+                                TempParent.transform.position = new Vector3(GestureTracker.ActiveModel.transform.position.x, GestureTracker.ActiveModel.transform.position.y - 0.5f, GestureTracker.ActiveModel.transform.position.z);
+                                TempParent.transform.rotation = GestureTracker.ActiveModel.transform.rotation;
+                                TempParent.transform.localScale = GestureTracker.ActiveModel.transform.localScale;
                                 TempModel.transform.position = GestureTracker.ActiveModel.transform.position;
                                 TempModel.transform.rotation = GestureTracker.ActiveModel.transform.rotation;
                                 TempModel.transform.localScale = GestureTracker.ActiveModel.transform.localScale;
                                 Destroy(GestureTracker.ActiveModel.gameObject);
                                 GestureTracker.ActiveModel = TempModel;
                                 GestureTracker.ActiveModel.gameObject.SetActive(true);
+                                TempParent.SetActive(true);
+                                GestureTracker.ActiveModel.SetParent(TempParent.transform);
                             }
                         }
                     }

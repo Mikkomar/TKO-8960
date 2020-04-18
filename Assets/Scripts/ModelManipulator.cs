@@ -7,7 +7,10 @@ public class ModelManipulator : MonoBehaviour
     public bool DebuggerOn;
     public float RotationSpeed;
     public float ZoomSpeed;
+    public float ScaleSpeed;
     public Transform ActiveModel;
+   
+    public Enums.ModelPinchAction PinchAction;
 
     void Start()
     {
@@ -42,13 +45,24 @@ public class ModelManipulator : MonoBehaviour
 
             float MagnitudeDifference = TouchMagnitude - TouchDeltaMagnitude;
 
-            /* Move model on camera-model axis according to finger movements */
-            MoveModelRelatedToCamera(MagnitudeDifference);
+            switch (PinchAction)
+            {
+                case (Enums.ModelPinchAction.Zoom):
+                    /* Move model on camera-model axis according to finger movements */
+                    MoveModelRelatedToCamera(MagnitudeDifference);
+                    break;
+                case (Enums.ModelPinchAction.Scale):
+                    /* Scale model according to finger movements */
+                    ScaleModel(MagnitudeDifference);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     /// <summary>
-    /// Move the model on the camera-model axis
+    /// Move the Model on the camera-model axis
     /// </summary>
     /// <param name="distance"></param>
     private void MoveModelRelatedToCamera(float distance)
@@ -56,6 +70,34 @@ public class ModelManipulator : MonoBehaviour
         if(ActiveModel != null)
         {
             ActiveModel.position += Camera.main.transform.forward * distance * ZoomSpeed;
+        }
+        else
+        {
+            DebugLine("Active model not found or not set!");
+        }
+    }
+    /// <summary>
+    /// Scale the Model parent
+    /// </summary>
+    /// <param name="modifier"></param>
+    private void ScaleModel(float modifier)
+    {
+        if (ActiveModel != null)
+        {
+            if (ActiveModel.parent != null)
+            {
+                /* Checking that the Model scale won't go negative */
+                if (ActiveModel.parent.transform.localScale.x - modifier * ScaleSpeed > 0 &&
+                    ActiveModel.parent.transform.localScale.y - modifier * ScaleSpeed > 0 &&
+                    ActiveModel.parent.transform.localScale.z - modifier * ScaleSpeed > 0)
+                {
+                    ActiveModel.parent.localScale -= new Vector3(modifier * ScaleSpeed, modifier * ScaleSpeed, modifier * ScaleSpeed);
+                }
+            }
+            else
+            {
+                DebugLine("Active model missing scalable parent!");
+            }
         }
         else
         {
