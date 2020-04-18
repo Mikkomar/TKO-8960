@@ -6,31 +6,24 @@ public class ModelManipulator : MonoBehaviour
 {
     public bool DebuggerOn;
     public float RotationSpeed;
+    public float ZoomSpeed;
     public Transform ActiveModel;
-    private Vector3 TouchContinuesAt;
 
-    // Start is called before the first frame update
     void Start()
     {
-        TouchContinuesAt = Vector3.zero;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         /* If using only one finger */
         if (Input.touchCount == 1)
         {
-            /* If a countinuous finger press is detected */
-            if (Input.GetMouseButton(0))
-            {
-                Vector3 direction = Input.mousePosition - TouchContinuesAt;
-                DebugLine($"Direction: {direction.ToString()}");
-                RotateModel(direction);
-            }
+            /* Get finger movement */
+            Vector3 direction = new Vector3(Input.GetTouch(0).deltaPosition.x, Input.GetTouch(0).deltaPosition.y, 0);
+            DebugLine($"Direction: {direction.ToString()}");
+            /* Rotate according to movement */
+            RotateModel(direction);
 
-            TouchContinuesAt = Input.mousePosition;
         }
 
         /* If using two fingers */
@@ -43,23 +36,37 @@ public class ModelManipulator : MonoBehaviour
             Vector2 TouchZeroPosition = TouchZero.position - TouchZero.deltaPosition;
             Vector2 TouchOnePosition = TouchOne.position - TouchOne.deltaPosition;
 
+            /* Calculate how fingers are moving related to each other */
             float TouchMagnitude = (TouchZeroPosition - TouchOnePosition).magnitude;
             float TouchDeltaMagnitude = (TouchZero.position - TouchOne.position).magnitude;
 
             float MagnitudeDifference = TouchMagnitude - TouchDeltaMagnitude;
 
+            /* Move model on camera-model axis according to finger movements */
             MoveModelRelatedToCamera(MagnitudeDifference);
         }
     }
 
+    /// <summary>
+    /// Move the model on the camera-model axis
+    /// </summary>
+    /// <param name="distance"></param>
     private void MoveModelRelatedToCamera(float distance)
     {
         if(ActiveModel != null)
         {
-            ActiveModel.position += Camera.main.transform.forward * distance;
+            ActiveModel.position += Camera.main.transform.forward * distance * ZoomSpeed;
+        }
+        else
+        {
+            DebugLine("Active model not found or not set!");
         }
     }
 
+    /// <summary>
+    /// Rotates the model
+    /// </summary>
+    /// <param name="rotationDirection"></param>
     private void RotateModel(Vector3 rotationDirection)
     {
         if (ActiveModel != null)
@@ -82,6 +89,10 @@ public class ModelManipulator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Used for debugging purposes to write lines with the Unity debug function
+    /// </summary>
+    /// <param name="line"></param>
     private void DebugLine(string line)
     {
         if (this.DebuggerOn)
