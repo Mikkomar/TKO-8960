@@ -7,9 +7,15 @@ using UnityEngine.UI;
 public class ModelController : MonoBehaviour
 {
     public Dropdown Dropdown;
+    public Dropdown MaterialDropdown;
     public Button PlaceButton;
     public Transform ScaleParent;
     private ModelManipulator GestureTracker;
+
+    public Material MaterialClothBlue;
+    public Material MaterialClothGreen;
+    public Material MaterialWood;
+    public Material MaterialDarkWood;
 
     void Start()
     {
@@ -24,6 +30,7 @@ public class ModelController : MonoBehaviour
     void Update()
     {
         CheckPlaceButtonVisibility();
+        CheckMaterialDropdownVisibility();
         MakeModelMoveWithCamera();
     }
 
@@ -72,6 +79,17 @@ public class ModelController : MonoBehaviour
     }
 
     /// <summary>
+    /// Changes MaterialDropdown visibility depending whether or not there is an active Model
+    /// </summary>
+    private void CheckMaterialDropdownVisibility()
+    {
+        if (MaterialDropdown != null && GestureTracker != null)
+        {
+            MaterialDropdown.gameObject.SetActive(GestureTracker.ActiveModel != null);
+        }
+    }
+
+    /// <summary>
     /// Sets the active model for GestureTracker
     /// </summary>
     public void SetActiveModel()
@@ -116,6 +134,7 @@ public class ModelController : MonoBehaviour
                                 TempModel.transform.position = GestureTracker.ActiveModel.transform.position;
                                 TempModel.transform.rotation = GestureTracker.ActiveModel.transform.rotation;
                                 TempModel.transform.localScale = GestureTracker.ActiveModel.transform.localScale;
+                                Destroy(GestureTracker.ActiveModel.parent.gameObject);
                                 Destroy(GestureTracker.ActiveModel.gameObject);
                                 GestureTracker.ActiveModel = TempModel;
                                 GestureTracker.ActiveModel.gameObject.SetActive(true);
@@ -126,6 +145,65 @@ public class ModelController : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    /// <summary>
+    /// Sets the material for the active Model
+    /// </summary>
+    public void SetMaterial()
+    {
+        if (this.MaterialDropdown != null && this.GestureTracker.ActiveModel != null)
+        {
+            int DropDownValueIndex = MaterialDropdown.value - 1;
+            /* If selected index not "Select Material" */
+            if (DropDownValueIndex != -1)
+            {
+                switch (DropDownValueIndex)
+                {
+                    case (0):
+                        if (this.MaterialClothBlue != null)
+                        {
+                            SetMaterialForModel(this.MaterialClothBlue);
+                        }
+                        break;
+                    case (1):
+                        if (this.MaterialClothGreen != null)
+                        {
+                            SetMaterialForModel(this.MaterialClothGreen);
+                        }
+                        break;
+                    case (2):
+                        if (this.MaterialWood != null)
+                        {
+                            SetMaterialForModel(this.MaterialWood);
+                        }
+                        break;
+                    case (3):
+                        if (this.MaterialDarkWood != null)
+                        {
+                            SetMaterialForModel(this.MaterialDarkWood);
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Changes the material for the active Model and its children's renderer
+    /// </summary>
+    /// <param name="material"></param>
+    private void SetMaterialForModel(Material material)
+    {
+        Renderer renderer = this.GestureTracker.ActiveModel.GetComponent<Renderer>();
+        if(renderer != null)
+        {
+            renderer.material = material;
+        }
+
+        foreach (var childrendrer in this.GestureTracker.ActiveModel.GetComponentsInChildren<Renderer>())
+        {
+            childrendrer.material = material;
         }
     }
 
