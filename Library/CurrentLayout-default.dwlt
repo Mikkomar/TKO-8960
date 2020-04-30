@@ -356,7 +356,7 @@ MonoBehaviour:
     height: 248
   m_ViewDataDictionary: {fileID: 0}
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: plane
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -594,9 +594,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 741.656, y: 1589.7599, z: -427.736}
+    m_Target: {x: -0.0000009760261, y: 0.76767737, z: -0.000000029802322}
     speed: 2
-    m_Value: {x: 741.656, y: 1589.7599, z: -427.736}
+    m_Value: {x: 0, y: 0, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -629,9 +629,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
   m_Size:
-    m_Target: 2.9181101
+    m_Target: 2.42204
     speed: 2
-    m_Value: 2.9181101
+    m_Value: 2.12204
   m_Ortho:
     m_Target: 0
     speed: 2
